@@ -1,0 +1,109 @@
+<html>
+<head>
+    <title>Leaflet Web Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" /> 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" ></script>
+    <style>
+        html, body, section
+		{
+			position: relative;
+			height: 100%;
+			background-color: white;
+		}
+	
+		html
+		{
+			scroll-behavior: smooth;
+		}
+	
+		#map {
+		width: 1100px;
+		height: 600px;
+		margin-top: 50px;
+		}  
+    </style>
+</head>
+<body>
+    <center>  
+		<h2 class="masthead-heading text-uppercase mb-0"; style="color: black;">Peta Rekomendasi Cafe di Sekitar UGM</h2>
+		<p class="masthead-heading text-uppercase mb-0"; style="color: black;">Terdapat informasi mengenai lokasi Cafe yang buka hingga 24 jam di wilayah UGM</p>
+	</center>
+	<center> <div id="map"> </div> </center>
+    <script>
+    
+    //Places Marker
+    var Arah = L.marker([-7.7605444,110.3809541]).bindPopup('Arah Coffee Pandawa'),
+        ILC = L.marker([-7.7600663,110.3810964]).bindPopup('Internet Learning Center'),
+        MCD  = L.marker([-7.7623764,110.3791398]).bindPopup('Mc Donald Jalan Kaliurang'),
+        Fordo = L.marker([-7.7622228,110.3797297]).bindPopup('Fordo'),
+        Tomoro = L.marker([-7.7614189,110.3798558]).bindPopup('TOMORO Coffee Jakal'),
+        Kopken= L.marker([-7.7611229,110.3802456]).bindPopup('Kopi Kenangan Jalan Kaliurang'),
+        Mosu = L.marker([-7.7446307,110.3756755]).bindPopup('Mosu Coffee'),
+        CW = L.marker([-7.7783539,110.3742366]).bindPopup('CW Coffee'),
+        Couvee = L.marker([-7.7574777,110.3848754]).bindPopup('Couvee Jakal'),
+        Calf= L.marker([-7.7635796,110.3766464]).bindPopup('Calf Coffee Industry'),
+        Reter = L.marker([-7.7565086,110.3728401]).bindPopup('RETER Coffee'),
+        Bento = L.marker([-7.756368,110.3734359]).bindPopup('Bento Kopi Pogung'),
+        Relasi = L.marker([-7.7567244,110.3738524]).bindPopup('Relasi Co-Working');
+
+    //Grouping Layer
+    var full = L.layerGroup([Arah, ILC, MCD, Fordo, Tomoro, Kopken, Mosu, CW]);
+    var all = L.layerGroup([Arah, ILC, MCD, Fordo, Tomoro, Kopken, Mosu, CW, Couvee, Calf, Reter, Bento, Relasi]);
+    var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+    });
+
+    //load a tile layer
+    var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+    });
+
+    var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        maxZoom: 17,
+        attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+        });
+
+    var osmHOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap contributors, Tiles style by Humanitarian OpenStreetMap Team hosted by OpenStreetMap France'});
+
+    var map = L.map('map', {
+        center: [-7.76015, 110.382635],
+        zoom: 15,
+        layers: [osm, full, all]
+    });
+    
+    //Ref Layer
+    var baseMaps = {
+        "OpenStreetMap": osm,
+        "OpenStreetMap.HOT": osmHOT,
+        "OpenTopoMap" : OpenTopoMap
+    };
+
+    var overlayMaps = {
+        "Cafe 24 jam di Slema": full,
+        "Cafe di Sleman": all 
+    };
+
+    //Memunculkan Layer
+    var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
+    var baseMaps = {
+        "OpenStreetMap": osm,
+        "<span style='color: red'>OpenStreetMap.HOT</span>": osmHOT,
+        "OpenTopoMap" : OpenTopoMap
+    };
+
+
+    //pop-up map click
+    var popup = L.popup();
+        function onMapClick(e) {
+            popup
+            alert("You clicked the map at " + e.latlng);
+        }
+        map.on('click', onMapClick);
+
+    </script>
+</body>
+</html>
